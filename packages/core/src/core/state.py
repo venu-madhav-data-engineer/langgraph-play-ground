@@ -17,3 +17,16 @@ class KeyValueState(TypedDict, total=False):
     output: str
     context: dict[str, Any]
     step_count: int
+
+class SQLAgentState(TypedDict, total=False):
+    """
+    State schema for SQL Agent workflows with error recovery and guardrails.
+    """
+    messages: Annotated[Sequence[BaseMessage], add_messages]
+    user_query: str
+    schema_context: str
+    sql_query: str | None
+    sql_result: list[dict[str, Any]] | None
+    error: str | None
+    retry_count: int
+    max_retries: int
