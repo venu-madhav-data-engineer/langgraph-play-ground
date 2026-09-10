@@ -5,6 +5,7 @@ from langchain_core.messages import HumanMessage
 from examples.ex01_basic_graph.main import build_graph as build_ex01_graph
 from examples.ex02_tool_calling_agent.main import build_graph as build_ex02_graph
 from examples.ex03_memory_and_checkpoints.main import build_chat_graph as build_ex03_graph
+from apps.cli.src.cli.main import build_cli_graph
 
 class TestMonorepo(unittest.TestCase):
     def test_core_schemas(self):
@@ -46,6 +47,18 @@ class TestMonorepo(unittest.TestCase):
 
         out2 = graph.invoke({"messages": [HumanMessage(content="Second message")]}, config=cfg)
         self.assertEqual(len(out2["messages"]), 4)
+
+    def test_cli_app_with_sql_and_math(self):
+        cli_graph = build_cli_graph()
+        
+        # Test math query
+        math_res = cli_graph.invoke({"query": "25 * 4", "response": ""})
+        self.assertIn("100", math_res["response"])
+
+        # Test SQL query
+        sql_res = cli_graph.invoke({"query": "Show me top customers by spend", "response": ""})
+        self.assertIn("Charlie Brown", sql_res["response"])
+        self.assertIn("SQL Executed", sql_res["response"])
 
 if __name__ == "__main__":
     unittest.main()

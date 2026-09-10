@@ -25,11 +25,12 @@ langgraph-play-ground/
 ├── examples/                 # Ready-to-run pattern examples
 │   ├── ex01_basic_graph/     # Linear stateful graph demonstration
 │   ├── ex02_tool_calling_agent/ # Conditional branching & tool invocation
-│   └── ex03_memory_and_checkpoints/ # Conversational persistence with MemorySaver
+│   ├── ex03_memory_and_checkpoints/ # Conversational persistence with MemorySaver
+│   └── ex04_sql_agent/       # Self-healing SQL agent with guardrails
 │
 ├── notebooks/                # Jupyter notebooks for interactive experimentation
 ├── docs/                     # Architecture guides & documentation
-└── tests/                    # Integration & unit test suite
+└── tests/                    # Integration & unit test suite (13 passing tests)
 ```
 
 ---
@@ -70,6 +71,7 @@ make install
 | `make run-basic` | Run the linear stateful graph example (`ex01_basic_graph`) |
 | `make run-tools` | Run the tool-calling conditional agent (`ex02_tool_calling_agent`) |
 | `make run-memory` | Run the conversational memory persistence example (`ex03_memory_and_checkpoints`) |
+| `make run-sql` | Run the self-healing SQL agent example (`ex04_sql_agent`) |
 | `make run-cli` | Launch the interactive agent CLI runner |
 | `make run-api` | Start the local HTTP API service on `http://0.0.0.0:8000` |
 
@@ -78,12 +80,13 @@ make install
 ## Shared Packages
 
 ### `packages/core`
-- **State Schemas**: `BaseAgentState` (with `add_messages` reducer), `KeyValueState`.
+- **State Schemas**: `BaseAgentState` (with `add_messages` reducer), `KeyValueState`, `SQLAgentState`.
 - **Utilities**: `print_ascii_graph`, `format_messages`.
 
 ### `packages/tools`
 - **Calculator**: Safe mathematical expression evaluation tool (`calculator.invoke(...)`).
-- **Tool Helpers**: Extraction and schema utilities.
+- **SQL Tools**: `SQLDatabase`, `create_sql_tools`, `create_sample_ecommerce_db`, guardrail query validation (`FORBIDDEN_SQL_KEYWORDS`).
+- **Tool Helpers**: Extraction and schema utilities (`get_tool_names`).
 
 ---
 
